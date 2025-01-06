@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { OAuthProvider, User } from "@prisma/client";
+import { Link, OAuthProvider, SocialLink, User } from "@prisma/client";
 
 export type CreateUserDto = {
   email: string;
@@ -12,6 +12,18 @@ export type UserDto = {
   id: string;
   email: string;
   name: string | null;
+  username: string;
+  description: string | null;
+  // links: Link[];
+  facebookUsername: string | null;
+  twitterUsername: string | null;
+  instagramUsername: string | null;
+  twitchUsername: string | null;
+  tiktokUsername: string | null;
+  spotifyUsername: string | null;
+  appleMusicUsername: string | null;
+  patreonUsername: string | null;
+  youtubeUsername: string | null;
   avatar: string | null;
   isVerified: boolean;
   stripeCustomerId: string | null;
@@ -23,6 +35,17 @@ function toDtoMapper(user: User): UserDto {
     id: user.id,
     email: user.email.toLowerCase(),
     name: user.name,
+    username: user.username,
+    description: user.description,
+    facebookUsername: user.facebookUsername,
+    twitterUsername: user.twitterUsername,
+    instagramUsername: user.instagramUsername,
+    twitchUsername: user.twitchUsername,
+    tiktokUsername: user.tiktokUsername,
+    spotifyUsername: user.spotifyUsername,
+    appleMusicUsername: user.appleMusicUsername,
+    patreonUsername: user.patreonUsername,
+    youtubeUsername: user.youtubeUsername,
     avatar: user.avatar,
     isVerified: user.isVerified,
     stripeCustomerId: user.stripeCustomerId,

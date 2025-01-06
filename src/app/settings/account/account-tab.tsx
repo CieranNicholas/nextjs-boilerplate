@@ -23,11 +23,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FileUpload, { FileType } from "@/components/file-upload";
-import { updateUser, uploadAvatar } from "./account.actions";
+import { updateUser } from "./account.actions";
 import { getInitials } from "@/helpers";
 import { THEMES } from "@/constants";
 import { useTheme } from "next-themes";
 import { UserDto } from "@/data-access/user";
+import { uploadAvatar } from "@/components/avatar-upload/actions";
 
 export default function AccountTab({ user }: { user: UserDto }) {
   const { theme, setTheme } = useTheme();

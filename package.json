@@ -10,7 +10,8 @@
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhook/stripe",
     "format": "prettier --write .",
     "email": "email dev --dir src/emails",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "migrate:dev": "prisma migrate dev"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

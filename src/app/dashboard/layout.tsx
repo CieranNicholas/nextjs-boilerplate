@@ -1,5 +1,5 @@
 import { LayoutDashboard } from "lucide-react";
-import { QuestionMarkIcon } from "@radix-ui/react-icons";
+import { Link1Icon, QuestionMarkIcon } from "@radix-ui/react-icons";
 import ProtectedLayout from "@/components/protected-layout";
 import LayoutSidebar from "@/components/layout-sidebar";
 
@@ -10,9 +10,9 @@ interface Props {
 const DashboardLayout: React.FC<Props> = ({ children }) => {
   const tabs = [
     {
-      key: "bean-machine",
-      label: "Bean Machine",
-      icon: <LayoutDashboard className={"mr-2 h-4 w-4"} />,
+      key: "links",
+      label: "Links",
+      icon: <Link1Icon className={"mr-2 h-4 w-4"} />,
       href: "/dashboard/home",
     },
     {

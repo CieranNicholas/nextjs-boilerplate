@@ -1,3 +1,10 @@
+#todo
+
+- don't allow for duplicate usernames
+- upload profile pic
+- update links
+- assign random username on account creation
+
 ## Getting Started
 
 First, run the development server:

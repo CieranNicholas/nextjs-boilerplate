@@ -9,26 +9,59 @@ datasource db {
 }
 
 model User {
+  // Personal Info
   id    String  @id @default(cuid())
   email String  @unique
   name  String?
-
   password   String?
-  avatar     String?
+
+  // Profile Info
+  avatar      String?
+  username    String   @unique @default(dbgenerated("'user-' || floor(random() * 1000000)::text"))
+  description String?
+  links       Link[]
+
+  // Social Links
+  facebookUsername String?
+  twitterUsername String?
+  instagramUsername String?
+  twitchUsername String?
+  tiktokUsername String?
+  spotifyUsername String?
+  appleMusicUsername String?
+  patreonUsername String?
+  youtubeUsername String?
+  
+  // Account Info
   isVerified Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
+  // Payment Info
   stripeCustomerId String? @unique
 
+  // Session Info
   session       Session[]
   subscriptions Price[]        @relation("UserSubscriptions")
   oAuthProvider OAuthProvider?
 }
 
-enum OAuthProvider {
-  GOOGLE
+model Link {
+  id String @id @default(cuid())
+  url String
+  title String
+  imageUrl String
+
+  clicks Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime? // soft delete
+
+  userId String
+  user User @relation(fields: [userId], references: [id])
 }
+
+// Auth Models
 
 model Session {
   id        String   @id
@@ -51,6 +84,12 @@ model PasswordResetToken {
   userId    String
   expiresAt DateTime
 }
+
+enum OAuthProvider {
+  GOOGLE
+}
+
+// Payment Models
 
 model Price {
   id              String               @id @default(cuid())
