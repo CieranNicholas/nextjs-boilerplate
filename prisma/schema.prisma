@@ -19,8 +19,10 @@ model User {
   avatar      String?
   username    String   @unique @default(dbgenerated("'user-' || floor(random() * 1000000)::text"))
   description String?
-  links       Link[]
-
+  links Link[] @relation("UserLinks")
+  theme Theme? @relation("UserTheme")
+  themeId String?
+  
   // Social Links
   facebookUsername String?
   twitterUsername String?
@@ -44,13 +46,14 @@ model User {
   session       Session[]
   subscriptions Price[]        @relation("UserSubscriptions")
   oAuthProvider OAuthProvider?
+ 
 }
 
 model Link {
-  id String @id @default(cuid())
+  id String @id @default(cuid()) @unique
   url String
   title String
-  imageUrl String
+  imageUrl String?
 
   clicks Int @default(0)
   createdAt DateTime @default(now())
@@ -58,7 +61,29 @@ model Link {
   deletedAt DateTime? // soft delete
 
   userId String
-  user User @relation(fields: [userId], references: [id])
+  user User @relation("UserLinks", fields: [userId], references: [id])
+}
+
+model Theme {
+  id String @id @default(cuid()) @unique
+
+  fontFamily String
+  fontWeight Int
+  fontColor String
+  secondaryColorFont String
+  backgroundColor String
+  backgroundImage String?
+  borderColor String
+  borderRadius Int
+  borderWidth Int
+  borderStyle String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime? // soft delete
+
+  userId String @unique
+  user User @relation("UserTheme", fields: [userId], references: [id])
 }
 
 // Auth Models

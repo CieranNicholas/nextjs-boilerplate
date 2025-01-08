@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Link, OAuthProvider, SocialLink, User } from "@prisma/client";
+import { OAuthProvider, User } from "@prisma/client";
 
 export type CreateUserDto = {
   email: string;

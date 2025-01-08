@@ -29,6 +29,17 @@ export const updateUserAvatar = async (url: string) => {
   }
 };
 
+export const getUserByUsername = async (username: string) => {
+  const { user } = await getUser();
+  if (!user) return null;
+
+  const data = await prisma.user.findUnique({
+    where: { username },
+  });
+
+  return data;
+};
+
 export const getUserSubscriptions = async () => {
   const { user } = await getUser();
   if (!user) return null;
