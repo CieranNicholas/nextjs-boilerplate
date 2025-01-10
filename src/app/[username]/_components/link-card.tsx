@@ -1,18 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+import placeholder from "@/assets/product-default.svg";
+import { LinkDto } from "@/data-access/links";
 
-interface LinkCardProps {
-  title: string;
-  url: string;
-  image: string;
-}
-
-export function LinkCard({ title, url, image }: LinkCardProps) {
+export function LinkCard({ title, url, imageUrl }: LinkDto) {
+  // TODO: on click, track click
   return (
     <Link href={url} passHref>
       <div className="flex items-center p-2 bg-white rounded-lg border border-gray-200 transition-all hover:border-gray-300 hover:scale-105">
         <Image
-          src={image}
+          src={imageUrl || placeholder}
           alt={title}
           width={50}
           height={50}

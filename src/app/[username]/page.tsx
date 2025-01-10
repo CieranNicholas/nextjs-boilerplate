@@ -1,30 +1,25 @@
 import Image from "next/image";
 import placeholder from "@/assets/product-default.svg";
-import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 import { getUserByUsername } from "@/actions/user.actions";
-import { TabSelector } from "@/components/tab-selector/tab-selector";
+import { TabSelector } from "@/app/[username]/_components/tab-selector";
+import { getLinksByUserId } from "@/data-access/links";
+import { SOCIAL_PLATFORMS } from "@/constants";
+import { X } from "lucide-react";
 
-const profileImage = placeholder;
+// todo: helper method to ensure https:// is prepended to the url
 
 const bgVideo =
   "https://fg92krreal8mypv5.public.blob.vercel-storage.com/urlfern/these%20clouds%20spotify%20canvas-BgxPR1YQkp3sjStMxVCz2lfTSFARD9.mp4";
 
-export default async function LinksPage({
+export default async function ArtistPage({
   params,
 }: {
   params: { username: string };
 }) {
   const user = await getUserByUsername(params.username);
-  if (!user) {
-    return <div>User not found</div>;
-  }
+  if (!user) return <div>User not found</div>;
 
-  const socialLinks = [
-    { icon: Facebook, url: "https://facebook.com/" + user.facebookUsername },
-    { icon: Twitter, url: "https://twitter.com/" + user.twitterUsername },
-    { icon: Instagram, url: "https://instagram.com/" + user.instagramUsername },
-    { icon: Youtube, url: "https://youtube.com/" + user.youtubeUsername },
-  ];
+  const links = await getLinksByUserId(user.id);
 
   return (
     <div className="relative min-h-screen overflow-hidden">
@@ -45,7 +40,7 @@ export default async function LinksPage({
           {/* Profile Info */}
           <div className="flex items-center mb-6 justify-center">
             <Image
-              src={profileImage}
+              src={user.avatar || placeholder}
               alt="Profile Picture"
               width={100}
               height={100}
@@ -58,19 +53,24 @@ export default async function LinksPage({
           </div>
 
           {/* Tab Selector */}
-          <TabSelector />
+          <TabSelector links={links} />
 
           {/* Social Links */}
           <div className="mt-8 flex justify-center space-x-4">
-            {socialLinks.map((link, index) => (
+            {SOCIAL_PLATFORMS.filter(
+              (platform) => user[platform.value as keyof typeof user],
+            ).map((platform, index) => (
               <a
                 key={index}
-                href={link.url || ""}
+                href={
+                  platform.prefix + user[platform.value as keyof typeof user] ||
+                  ""
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white hover:text-gray-300 transition-colors"
               >
-                <link.icon size={24} />
+                {platform.icon ? <platform.icon size={24} /> : <X size={24} />}
               </a>
             ))}
           </div>

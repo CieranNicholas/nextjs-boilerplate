@@ -1,27 +1,13 @@
 import { LayoutDashboard } from "lucide-react";
-import { Link1Icon, QuestionMarkIcon } from "@radix-ui/react-icons";
 import ProtectedLayout from "@/components/protected-layout";
 import LayoutSidebar from "@/components/layout-sidebar";
-
+import { DASHBOARD_TABS } from "./tabs";
 interface Props {
   children: React.ReactNode;
 }
 
 const DashboardLayout: React.FC<Props> = ({ children }) => {
-  const tabs = [
-    {
-      key: "links",
-      label: "Links",
-      icon: <Link1Icon className={"mr-2 h-4 w-4"} />,
-      href: "/dashboard/home",
-    },
-    {
-      key: "example",
-      label: "Example",
-      icon: <QuestionMarkIcon className={"mr-2 h-4 w-4"} />,
-      href: "/dashboard/example",
-    },
-  ];
+  const tabs = DASHBOARD_TABS;
 
   return (
     <ProtectedLayout redirectUrl="/auth">

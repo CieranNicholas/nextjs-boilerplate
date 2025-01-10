@@ -14,6 +14,7 @@ export type LinkDto = {
   title: string;
   imageUrl: string;
   userId: string;
+  index: number;
 };
 
 function toDtoMapper(link: Link): LinkDto {
@@ -23,12 +24,49 @@ function toDtoMapper(link: Link): LinkDto {
     title: link.title,
     imageUrl: link.imageUrl,
     userId: link.userId,
+    index: link.index,
   };
 }
 
 export async function createLink(data: CreateLinkDto): Promise<LinkDto> {
   const createdLink = await prisma.link.create({ data });
   return toDtoMapper(createdLink);
+}
+
+export async function createLinks(data: CreateLinkDto[]): Promise<void> {
+  await prisma.link.createMany({ data });
+  console.log("createdLinks", data);
+  // const createdLinks = await prisma.link.findMany({
+  //   where: {
+  //     userId: data[0].userId,
+  //   },
+  //   orderBy: {
+  //     createdAt: "desc",
+  //   },
+  //   take: data.length,
+  // });
+  // return createdLinks.map(toDtoMapper);
+}
+
+export async function updateLinks(data: LinkDto[]): Promise<void> {
+  // updateMany() doesn't work here because we need to update each link individually
+  // with its specific id and data
+  for (const link of data) {
+    await prisma.link.update({
+      where: { id: link.id },
+      data: {
+        url: link.url,
+        title: link.title,
+        imageUrl: link.imageUrl,
+      },
+    });
+  }
+  // const updatedLinks = await prisma.link.findMany({
+  //   where: {
+  //     userId: data[0].userId,
+  //   },
+  // });
+  // return updatedLinks.map(toDtoMapper);
 }
 
 export async function getLinks(): Promise<LinkDto[]> {
@@ -59,6 +97,6 @@ export async function updateLinkById(
   await prisma.link.update({ where: { id }, data });
 }
 
-export async function deleteLink(id: string): Promise<void> {
+export async function deleteLinkById(id: string): Promise<void> {
   await prisma.link.delete({ where: { id } });
 }
